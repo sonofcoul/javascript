@@ -1,0 +1,11 @@
+body {
+  min-height: calc(100vh - 100px);
+  margin: 0;
+  background: url(https://audreyhossepian.fr/img/logo.png),
+    linear-gradient(40deg, #fc466b, #3f5efb);
+  background-position: 95% 90%;
+  background-repeat: no-repeat;
+  font-family: Arial, Helvetica, sans-serif;
+  padding: 50px;
+  color: white;
+}
