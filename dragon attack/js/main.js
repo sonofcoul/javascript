@@ -2,6 +2,8 @@
 
 let game = new Object();
 
+const DIV = document.querySelector("#game");
+
 function initializeGame() {
   game.round = 0;
 
@@ -51,68 +53,108 @@ function initializeGame() {
       game.armorRatio = 0.5;
       break;
   }
+
+  DIV.innerHTML += `<h3>Point de vie de départ</h3>
+  <table>
+    <tr>
+      <th>Personnage</th>
+      <th>PV</th>
+    </tr>
+    <tr>
+      <td>Chevalier</td>
+      <td>${game.knighthp} </td>
+    </tr>
+    <tr>
+      <td>Dragon</td>
+      <td>${game.dragonhp}</td>
+    </tr>
+  </table>`;
 }
 
 function computeDragonDamagePoint() {
+  let dmgdragon;
   switch (game.difficulty) {
     case 1:
-      game.dmgdragon = getRandomInt(10, 20);
+      dmgdragon = getRandomInt(10, 20);
       break;
     case 2:
-      game.dmgdragon = getRandomInt(20, 30);
+      dmgdragon = getRandomInt(20, 30);
       break;
     case 3:
-      game.dmgdragon = getRandomInt(20, 30);
+      dmgdragon = getRandomInt(20, 30);
       break;
   }
-  return game.dmgdragon * game.armorRatio;
+  return Math.floor(dmgdragon * game.armorRatio);
 }
 
 function computePlayerDamagePoint() {
+  let dmgknight;
   switch (game.difficulty) {
     case 1:
-      game.dmgknight = getRandomInt(25, 30);
+      dmgknight = getRandomInt(25, 30);
       break;
     case 2:
-      game.dmgknight = getRandomInt(15, 20);
+      dmgknight = getRandomInt(15, 20);
       break;
     case 3:
-      game.dmgknight = getRandomInt(5, 10);
+      dmgknight = getRandomInt(5, 10);
       break;
   }
-  return game.dmgknight * game.swordRatio;
+  return Math.floor(dmgknight * game.swordRatio);
 }
 
 function gameLoop() {
-  console.log(game.knighthp, game.dragonhp);
   do {
-    console.log("----------tour------------");
     game.round++;
-    console.log("round : " + game.round);
+    DIV.innerHTML += `<h3>--- Tour n°${game.round} ---</h3>`;
     let speedAttack = getRandomInt(1, 2);
     if (speedAttack == 1) {
-      game.knighthp = game.knighthp - computeDragonDamagePoint();
-      console.log(game.knighthp, game.dragonhp);
+      let dmgdragon = computeDragonDamagePoint();
+      game.knighthp -= dmgdragon;
+      DIV.innerHTML += `Le dragon est plus rapide et vous brûle, il vous enlève ${dmgdragon} PV. <br /> <br /><table>
+      <tr>
+        <th>Personnage</th>
+        <th>PV</th>
+      </tr>
+      <tr>
+        <td>Chevalier</td>
+        <td>${game.knighthp} </td>
+      </tr>
+      <tr>
+        <td>Dragon</td>
+        <td>${game.dragonhp}</td>
+      </tr>
+    </table>`;
     } else {
-      game.dragonhp = game.dragonhp - computePlayerDamagePoint();
-      console.log(game.knighthp, game.dragonhp);
+      let dmgknight = computePlayerDamagePoint();
+      game.dragonhp -= dmgknight;
+      DIV.innerHTML += `Vous êtes plus rapide et frappez le dragon, vous lui enlevez ${dmgknight} PV. <br /> <br /> <table>
+      <tr>
+        <th>Personnage</th>
+        <th>PV</th>
+      </tr>
+      <tr>
+        <td>Chevalier</td>
+        <td>${game.knighthp} </td>
+      </tr>
+      <tr>
+        <td>Dragon</td>
+        <td>${game.dragonhp}</td>
+      </tr>
+    </table>`;
     }
   } while (game.knighthp > 0 && game.dragonhp > 0);
 }
 
 function showGameWinner() {
   if (game.knighthp > 0) {
-    console.log(
-      "Vous avez gagné, vous êtes vraiment fort ! Il vous restait " +
-        game.knighthp +
-        " PV"
-    );
+    DIV.innerHTML =
+      `<div id="article"><img src="img/knight.png" /><b>Vous avez gagné, vous êtes vraiment fort !</b><p> Il vous restait ${game.knighthp} PV.</p></div>` +
+      DIV.innerHTML;
   } else {
-    console.log(
-      "Le dragon a gagné, vous avez été carbonisé ! Il restait " +
-        game.dragonhp +
-        " PV au dragon."
-    );
+    DIV.innerHTML =
+      `<div id="article"><img src="img/dragon.png" /><b>Le dragon a gagné, vous avez été carbonisé !</b> <p>Il restait ${game.dragonhp} PV au dragon.</p></div>` +
+      DIV.innerHTML;
   }
 }
 
@@ -123,6 +165,3 @@ function startGame() {
 }
 
 startGame();
-
-console.log(game);
-console.log(game.knighthp, game.dragonhp);
