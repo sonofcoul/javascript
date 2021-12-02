@@ -3,9 +3,6 @@
 function displayHTML(htmlDatas) {
   $("#target").html(htmlDatas);
 }
-function displayhtmlMovies(movies) {
-  $("#target").html(movies);
-}
 
 function displayContacts(contacts) {
   let html = "<ul>";
@@ -50,7 +47,7 @@ function onClickExecute() {
       $.getJSON("data/2-get-contacts-list.json", displayContacts);
       break;
     case "3":
-      $.get("data/3-get-html-movies.html", displayhtmlMovies);
+      $.get("data/3-get-html-movies.html", displayHTML);
       break;
     case "4":
       $.get("data/4-get-json-movies.json", displayMovies);
